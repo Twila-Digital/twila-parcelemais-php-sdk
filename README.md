@@ -147,7 +147,7 @@ Verifica a assinatura HMAC-SHA256 do cabeçalho e a janela de replay (5 minutos)
 
 - **Build/Test** (`ci.yml`) — `phpstan analyse` (nível 8) + `phpcs` (PSR-12) + suíte de testes (`phpunit`) em PHP 7.4–8.5.
 - **Quality** (`quality.yml`) — análise estática via Codacy CLI (PHPMD), resultados publicados na aba **Security → Code scanning** do repositório.
-- **Security** (`security.yml`) — [CodeQL](https://codeql.github.com/) para PHP, rodando a cada PR/push e semanalmente.
+- **Security** (`security.yml`) — [Psalm](https://psalm.dev/) com taint analysis (o CodeQL não suporta PHP) + `composer audit`, rodando a cada PR/push e semanalmente.
 - **Coverage** — cobertura de testes coletada via Xdebug/PCOV e publicada no [Codecov](https://codecov.io/gh/Twila-Digital/twila-parcelemais-php-sdk).
 
 ## Documentação completa
