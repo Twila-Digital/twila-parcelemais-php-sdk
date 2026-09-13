@@ -11,6 +11,7 @@ on:
 jobs:
   ci:
     uses: ./.github/workflows/ci.yml
+    secrets: inherit
 
   contract-tests:
     needs: ci
