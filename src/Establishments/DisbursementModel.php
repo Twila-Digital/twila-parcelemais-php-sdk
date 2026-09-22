@@ -17,6 +17,8 @@ final class DisbursementModel
 
     public static function fromWireValue(int $value): int
     {
-        return in_array($value, [self::ESTABLISHMENT_CHAIN, self::ESTABLISHMENT, self::EXTERNAL], true) ? $value : self::UNKNOWN;
+        $known = [self::ESTABLISHMENT_CHAIN, self::ESTABLISHMENT, self::EXTERNAL];
+
+        return in_array($value, $known, true) ? $value : self::UNKNOWN;
     }
 }
