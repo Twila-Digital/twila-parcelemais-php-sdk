@@ -13,6 +13,7 @@ use Twila\ParceleMais\Internal\Auth\TokenApiClient;
 use Twila\ParceleMais\Internal\Http\ApiRequestExecutor;
 use Twila\ParceleMais\Orders\OrdersClient;
 use Twila\ParceleMais\Simulations\SimulationsClient;
+use Twila\ParceleMais\Establishments\EstablishmentsClient;
 use Twila\ParceleMais\Webhooks\WebhooksClient;
 
 /**
@@ -29,6 +30,9 @@ final class ParceleMaisClient
 
     /** @var CustomersClient */
     public $customers;
+
+    /** @var EstablishmentsClient */
+    public $establishments;
 
     /** @var WebhooksClient */
     public $webhooks;
@@ -53,6 +57,7 @@ final class ParceleMaisClient
         $this->orders = new OrdersClient($executor, $resolved->resilience->invoiceUploadAttemptTimeoutMs);
         $this->simulations = new SimulationsClient($executor);
         $this->customers = new CustomersClient($executor);
+        $this->establishments = new EstablishmentsClient($executor);
         $this->webhooks = new WebhooksClient($executor);
     }
 }

@@ -34,6 +34,20 @@ final class TestClientFactory
      */
     public static function withMockResponses(array $responses, ?ResilienceOptions $resilience = null): ParceleMaisClient
     {
+        [$client] = self::withMockHandler($responses, $resilience);
+
+        return $client;
+    }
+
+    /**
+     * Mesma construção de withMockResponses, devolvendo também o MockHandler para quem
+     * precisa inspecionar a requisição enviada (URL, query string, corpo).
+     *
+     * @param array<int, Response> $responses
+     * @return array{0: ParceleMaisClient, 1: MockHandler}
+     */
+    public static function withMockHandler(array $responses, ?ResilienceOptions $resilience = null): array
+    {
         $mock = new MockHandler(array_merge([self::defaultTokenResponse()], $responses));
         $handlerStack = HandlerStack::create($mock);
         $httpClient = new Client(['handler' => $handlerStack, 'http_errors' => false]);
@@ -46,6 +60,6 @@ final class TestClientFactory
             $resilience
         );
 
-        return new ParceleMaisClient($options, $httpClient);
+        return [new ParceleMaisClient($options, $httpClient), $mock];
     }
 }
