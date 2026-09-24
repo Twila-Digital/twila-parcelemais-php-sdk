@@ -26,6 +26,7 @@ final class WireContractTest extends TestCase
         '/v1/customer/paged',
         '/v1/webhooks',
         '/v1/webhooks/{type}',
+        '/v1/webhooks/auditoria',
     ];
 
     /** @var array<string, mixed>|null */

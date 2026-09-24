@@ -8,10 +8,26 @@ use Twila\ParceleMais\Webhooks\CreateWebhookRequest;
 use Twila\ParceleMais\Webhooks\UpdateWebhookRequest;
 use Twila\ParceleMais\Webhooks\WebHookAuthenticationType;
 use Twila\ParceleMais\Webhooks\Webhook;
+use Twila\ParceleMais\Webhooks\WebhookAudit;
 use Twila\ParceleMais\Webhooks\WebHookType;
 
 final class WebhookMapper
 {
+    /**
+     * @param array<string, mixed> $wire
+     */
+    public static function auditToPublic(array $wire): WebhookAudit
+    {
+        return new WebhookAudit(
+            $wire['id'],
+            WebHookType::fromWireValue($wire['tipo']),
+            $wire['requisicao'],
+            $wire['resposta'],
+            $wire['statusCode'],
+            $wire['dataCriacao']
+        );
+    }
+
     /**
      * @param array<string, mixed> $wire
      */

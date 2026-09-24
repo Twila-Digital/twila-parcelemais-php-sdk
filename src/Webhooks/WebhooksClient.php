@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Twila\ParceleMais\Webhooks;
 
 use Twila\ParceleMais\Internal\Http\ApiRequestExecutor;
+use Twila\ParceleMais\Internal\Http\QueryStringBuilder;
+use Twila\ParceleMais\Internal\Mapping\PagedMapper;
 use Twila\ParceleMais\Internal\Mapping\WebhookMapper;
+use Twila\ParceleMais\PagedResult;
 
 final class WebhooksClient
 {
@@ -35,6 +38,30 @@ final class WebhooksClient
         ApiRequestExecutor::ensureSuccess($response);
 
         return array_map([WebhookMapper::class, 'toPublic'], $response->body);
+    }
+
+    /**
+     * Auditoria paginada das entregas de webhook — um registro por tentativa, mais recentes primeiro.
+     * Os itens do PagedResult são instâncias de WebhookAudit.
+     */
+    public function listAudit(?ListWebhookAuditRequest $request = null): PagedResult
+    {
+        $request = $request ?? new ListWebhookAuditRequest();
+
+        $path = (new QueryStringBuilder())
+            ->add('dataInicio', $request->startDate)
+            ->add('dataFim', $request->endDate)
+            ->add('pedidoId', $request->orderId)
+            ->add('numeroPedido', $request->orderNumber)
+            ->add('statusCode', $request->statusCode)
+            ->add('pagina', $request->page)
+            ->add('tamanhoPagina', $request->pageSize)
+            ->build('v1/webhooks/auditoria');
+
+        $response = $this->executor->get($path);
+        ApiRequestExecutor::ensureSuccess($response);
+
+        return PagedMapper::fromWire($response->body, [WebhookMapper::class, 'auditToPublic']);
     }
 
     public function update(int $type, UpdateWebhookRequest $request): void

@@ -86,11 +86,12 @@ $pedidoId = $client->orders->create(new CreateOrderRequest(
 | `$client->orders` | `create`, `get`, `list`, `startCdcSale`, `importInvoice` |
 | `$client->simulations` | `simulateInstallments`, `simulateValues` |
 | `$client->customers` | `get`, `list` |
-| `$client->webhooks` | `create`, `list`, `update`, `delete` |
+| `$client->establishments` | `create`, `get`, `list`, `update`, `updateBankAccount`, `activate`, `deactivate` |
+| `$client->webhooks` | `create`, `list`, `listAudit`, `update`, `delete` |
 
 ## Paginação
 
-`orders->list(...)` e `customers->list(...)` retornam um `PagedResult` — sem auto-paginação, você controla explicitamente o avanço de página:
+`orders->list(...)`, `customers->list(...)` e `webhooks->listAudit(...)` retornam um `PagedResult` — sem auto-paginação, você controla explicitamente o avanço de página:
 
 ```php
 use Twila\ParceleMais\Orders\ListOrdersRequest;

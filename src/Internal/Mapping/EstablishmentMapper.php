@@ -29,7 +29,7 @@ final class EstablishmentMapper
                 'celular' => $request->owner->phone,
             ],
             'contaBancaria' => self::bankAccountToWire($request->bankAccount),
-            'endereco' => $request->address === null ? null : self::addressToWire($request->address),
+            'endereco' => self::addressToWire($request->address),
         ];
     }
 

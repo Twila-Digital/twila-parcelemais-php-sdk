@@ -24,7 +24,7 @@ final class CreateEstablishmentRequest
     /** @var EstablishmentBankAccount */
     public $bankAccount;
 
-    /** @var EstablishmentAddress|null */
+    /** @var EstablishmentAddress obrigatório na criação */
     public $address;
 
     public function __construct(
@@ -34,7 +34,7 @@ final class CreateEstablishmentRequest
         int $disbursementModel,
         EstablishmentOwner $owner,
         EstablishmentBankAccount $bankAccount,
-        ?EstablishmentAddress $address = null
+        EstablishmentAddress $address
     ) {
         $this->document = $document;
         $this->legalName = $legalName;

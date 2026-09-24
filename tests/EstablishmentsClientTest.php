@@ -54,7 +54,7 @@ final class EstablishmentsClientTest extends TestCase
         ],
     ];
 
-    private static function newCreateRequest(?EstablishmentAddress $address = null): CreateEstablishmentRequest
+    private static function newCreateRequest(): CreateEstablishmentRequest
     {
         return new CreateEstablishmentRequest(
             '12345678000199',
@@ -63,7 +63,7 @@ final class EstablishmentsClientTest extends TestCase
             DisbursementModel::ESTABLISHMENT_CHAIN,
             new EstablishmentOwner('Maria Souza', 'maria@loja.com.br', '+5511999998888'),
             new EstablishmentBankAccount('341', '1234', '56789', '0', BankAccountType::CURRENT),
-            $address
+            new EstablishmentAddress('Rua Exemplo', '100', 'Centro', 'São Paulo', 'SP', '01310100')
         );
     }
 
@@ -87,9 +87,7 @@ final class EstablishmentsClientTest extends TestCase
             new Response(200, [], (string) json_encode(['estabelecimentoId' => self::ESTABLISHMENT_ID])),
         ]);
 
-        $result = $client->establishments->create(self::newCreateRequest(
-            new EstablishmentAddress('Rua Exemplo', '100', 'Centro', 'São Paulo', 'SP', '01310100')
-        ));
+        $result = $client->establishments->create(self::newCreateRequest());
 
         self::assertSame(self::ESTABLISHMENT_ID, $result->establishmentId);
 
@@ -108,18 +106,6 @@ final class EstablishmentsClientTest extends TestCase
         self::assertSame(1, $body['contaBancaria']['tipoConta']);
         self::assertIsArray($body['endereco']);
         self::assertSame('01310100', $body['endereco']['cep']);
-    }
-
-    public function testCreateWithoutAddressSendsNull(): void
-    {
-        [$client, $mock] = TestClientFactory::withMockHandler([
-            new Response(200, [], (string) json_encode(['estabelecimentoId' => self::ESTABLISHMENT_ID])),
-        ]);
-
-        $client->establishments->create(self::newCreateRequest());
-
-        $body = self::decodeLastBody($mock);
-        self::assertNull($body['endereco']);
     }
 
     public function testGetMapsEstablishment(): void
